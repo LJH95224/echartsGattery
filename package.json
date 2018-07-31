@@ -1,0 +1,22 @@
+{
+  "name": "echartsgattery",
+  "version": "1.0.0",
+  "description": "echarts中的gattery",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LJH95224/echartsGattery.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LJH95224/echartsGattery/issues"
+  },
+  "homepage": "https://github.com/LJH95224/echartsGattery#readme",
+  "dependencies": {
+    "echarts": "^4.0.2"
+  }
+}

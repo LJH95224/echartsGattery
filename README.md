@@ -1,2 +1,2 @@
 # echartsGattery
-echarts中的
+echarts中的gattery
