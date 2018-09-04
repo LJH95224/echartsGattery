@@ -22,14 +22,14 @@
       },
       radar: {
         indicator: [
-          { name: '护士'},
-          { name: "传染病医生"},
-          { name: "呼吸科医生"},
-          { name: "普通床位"},
-          { name: "重症监护床位"},
-          { name: "重症监护仪"},
-          { name: "呼吸机"},
-          { name: "心理辅导员"}
+          { name: '护士', max: '20000'},
+          { name: "传染病医生", max: '20000'},
+          { name: "呼吸科医生", max: '20000'},
+          { name: "普通床位", max: '20000'},
+          { name: "重症监护床位", max: '20000'},
+          { name: "重症监护仪", max: '20000'},
+          { name: "呼吸机", max: '20000'},
+          { name: "心理辅导员", max: '20000'}
         ],
         startAngle: 90,
         splitNumber: 4,
@@ -45,6 +45,10 @@
               'rgb(29,169,236)', 'rgb(36,146,196)']
           }
         },
+        axisTick: {
+          show: true,
+          inside: true,
+        },
         axisLine: {
           lineStyle: {
             color: 'rgba(255, 255, 255, 1)'
@@ -54,14 +58,28 @@
           lineStyle: {
             color: 'rgba(255, 255, 255, 1)'
           }
+        },
+        axisLabel: {
+          show: true,
+          formatter: function (value, index) {
+            return value + "kg"
+          }
         }
       },
       series: [{
         type: 'radar',
-
         data: [
           {
             value: [9000, 4950, 4560, 9000, 6000, 6000, 6000, 2550],
+            name: "可循环使用资源",
+            label: {
+              normal: {
+                show: true,
+                formatter: function (param) {
+                  return param.value
+                }
+              }
+            },
             lineStyle: {
               normal: {
                 color: 'red'
@@ -76,5 +94,4 @@
     }
   </script>
 </body>
-
 </html>
