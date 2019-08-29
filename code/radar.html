@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>雷达图</title>
-  <script src="./node_modules/echarts/dist/echarts.min.js"></script>
+  <script src="../node_modules/echarts/dist/echarts.min.js"></script>
 </head>
 
 <body style="height: 100%; margin: 0">
@@ -15,6 +15,7 @@
     var dom = document.getElementById("container");
     var myChart = echarts.init(dom);
     var app = {};
+    
     option = null;
     option = {
       tooltip: {

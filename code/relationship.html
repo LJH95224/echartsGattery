@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>关系图（知识图谱）</title>
+    <script src="../node_modules/echarts/dist/echarts.min.js"></script>
+  </head>
+
+  <body style="height: 100%; margin: 0">
+    <div
+      id="container"
+      style="height: 800px; width: 1900px; border: 1px solid red;"
+    ></div>
+    <script>
+      let dom = document.getElementById("container");
+      let myChart = echarts.init(dom);
+      option = null;
+      function getImgData(imgSrc, radius) {
+        return new Promise(resolve => {
+          const canvas = document.createElement("canvas");
+          const contex = canvas.getContext("2d");
+          const img = new Image();
+          img.crossOrigin = "";
+          const diameter = 2 * radius;
+          console.log(diameter)
+          img.src = imgSrc;
+          img.onload = function() {
+            canvas.width = diameter;
+            canvas.height = diameter;
+            contex.clearRect(0, 0, diameter, diameter);
+            contex.save();
+            contex.beginPath();
+            contex.arc(radius, radius, radius, 0, 2 * Math.PI); //画出圆
+            contex.clip(); //裁剪上面的圆形
+            contex.drawImage(
+              img, 0, 0, diameter, diameter
+            )
+            contex.restore(); // 还原状态
+            resolve(canvas.toDataURL("image/png", 1));
+          };
+          
+          console.log(img)
+        });
+      }
+      let p1 = getImgData("./assesst/image/hangm.png", 60);
+      let p2 = getImgData("./assesst/image/point.png", 60);
+      let p3 = getImgData("./assesst/image/shemi.png", 60);
+      let oldData = [
+        {
+          name: "辽宁号",
+          draggable: true,
+          category: 3
+        },
+        {
+          name: "传感器1",
+          category: 0,
+          draggable: true
+        },
+        {
+          name: "传感器2",
+          category: 0,
+          draggable: true
+        }
+      ];
+      let picList = [];
+
+      Promise.all([p1, p2, p3]).then(image => {
+        console.log(image);
+        let newData = oldData.map((e, index) => {
+          e.symbol = "image://" + image[index];
+          return e;
+        });
+        console.log(newData);
+        option = {
+          title: {
+            text: ""
+          },
+          tooltip: {},
+          animationDurationUpdate: 1500,
+          animationEasingUpdate: "quinticInOut",
+          label: {
+            normal: {
+              show: true,
+              textStyle: {
+                fontSize: 12
+              }
+            }
+          },
+          legend: {
+            x: "center",
+            show: true,
+            data: ["mian", "传感器", "武器", "舰载机"]
+          },
+          series: [
+            {
+              type: "graph",
+              layout: "force",
+              draggable: true,
+              symbolKeepAspect: true,
+              symbol: "roundRect",
+              symbolSize: [50, 50],
+              force: {
+                repulsion: 1000,
+                edgeLength: [150, 200],
+                layoutAnimation: true
+              },
+              // 设置箭头
+              edgeSymbol: ["none", "arrow"],
+              // 设置箭头的大小
+              edgeSymbolSize: [0, 10],
+              // 显示节点与邻近节点
+              focusNodeAdjacency: true,
+              roam: true,
+              circular: {
+                // 是否旋转
+                rotateLabel: true
+              },
+              // 节点分类
+              categories: [
+                {
+                  name: "传感器",
+                  itemStyle: {
+                    normal: {
+                      color: "#009800"
+                    }
+                  }
+                },
+                {
+                  name: "武器",
+                  itemStyle: {
+                    normal: {
+                      color: "#4592FF"
+                    }
+                  }
+                },
+                {
+                  name: "舰载机",
+                  itemStyle: {
+                    normal: {
+                      color: "#12b5d0"
+                    }
+                  }
+                },
+                {
+                  name: "mian",
+                  itemStyle: {
+                    normal: {
+                      color: "red"
+                    }
+                  }
+                }
+              ],
+              label: {
+                normal: {
+                  show: true,
+                  position: "bottom",
+                  textStyle: {
+                    fontSize: 12
+                  }
+                }
+              },
+              edgeLabel: {
+                normal: {
+                  show: true,
+                  textStyle: {
+                    fontSize: 10
+                  },
+                  formatter: "{c}"
+                }
+              },
+              data: newData,
+              links: [
+                {
+                  source: "辽宁号",
+                  target: "传感器1",
+                  value: "传感器",
+                  lineStyle: {
+                    normal: {
+                      color: "#009800"
+                    }
+                  }
+                },
+                {
+                  source: "辽宁号",
+                  target: "传感器2",
+                  value: "传感器",
+                  lineStyle: {
+                    normal: {
+                      color: "#009800"
+                    }
+                  }
+                },
+                {
+                  source: "辽宁号",
+                  target: "武器1",
+                  value: "传感器",
+                  lineStyle: {
+                    normal: {
+                      color: "#4592FF"
+                    }
+                  }
+                },
+                {
+                  source: "辽宁号",
+                  target: "武器2",
+                  value: "传感器",
+                  lineStyle: {
+                    normal: {
+                      color: "#4592FF"
+                    }
+                  }
+                },
+                {
+                  source: "辽宁号",
+                  target: "舰载机1",
+                  value: "舰载机",
+                  lineStyle: {
+                    normal: {
+                      color: "#12b5d0"
+                    }
+                  }
+                },
+                {
+                  source: "辽宁号",
+                  target: "舰载机2",
+                  value: "舰载机",
+                  lineStyle: {
+                    normal: {
+                      color: "#12b5d0"
+                    }
+                  }
+                }
+              ],
+              lineStyle: {
+                normal: {
+                  opacity: 0.9,
+                  width: 1,
+                  curveness: 0
+                }
+              }
+            }
+          ]
+        };
+        myChart.setOption(option);
+        myChart.on('click', function (param) {
+          console.log('param---->', param);  // 打印出param, 可以看到里边有很多参数可以使用
+          //获取节点点击的数组序号
+          var arrayIndex = param.dataIndex;
+          console.log('arrayIndex---->', arrayIndex);
+          console.log('name---->', param.name);
+          if (param.dataType == 'node') {
+              alert("点击了节点" + param.name)
+          } else {
+              alert("点击了连接线" + param.value)
+          }
+        })
+      });
+    </script>
+  </body>
+</html>
